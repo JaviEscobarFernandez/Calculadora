@@ -27,18 +27,33 @@ public class Calculadora {
         operaciones.add(o);
         setUltimaOperacion("");
     }
-    public void clearOperations() { operaciones.clear(); }
+    public void limpiarOperaciones(boolean resetearResultado) {
+        operaciones.clear();
+        setUltimaOperacion("");
+        if (resetearResultado)
+            setResultado(0);
+    }
     public void setUltimaOperacion(String o)  { ultimaOperacion = o; }
     public String getUltimaOperacion() { return ultimaOperacion; }
 
-    public void sumar(int valor) { resultado += valor; }
-    public void restar(int valor) { resultado -= valor; }
-    public void multiplicar(int valor) { resultado *= valor; }
+    public void sumar(int valor) {
+        System.out.println("Sumando: " + getResultado() + " con " + valor);
+        resultado += valor;
+    }
+    public void restar(int valor) {
+        System.out.println("Restando: " + getResultado() + " con " + valor);
+        resultado -= valor;
+    }
+    public void multiplicar(int valor) {
+        System.out.println("Multiplicando: " + getResultado() + " por " + valor);
+        resultado *= valor;
+    }
     public void dividir(int valor) {
         if (valor == 0) {
             System.err.println("ERROR: no puedes dividir entre 0");
             return;
         }
+        System.out.println("Dividiendo: " + getResultado() + " entre " + valor);
         resultado /= valor;
     }
     public void realizarOperaciones() {
@@ -54,11 +69,13 @@ public class Calculadora {
                 case "dividir" -> "dividir";
                 default -> "";
             };
-            if (!primeraOperacion && operacion.isEmpty()) {
+            if (!primeraOperacion) {
                 primeraOperacion = true;
-                setResultado(Integer.parseInt(i));
+                if (operacion.isEmpty())
+                    setResultado(Integer.parseInt(i));
             }
         }
+        limpiarOperaciones(false);
     }
 
     private void aplicarOperacion(String operacion, String operando) {

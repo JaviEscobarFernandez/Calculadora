@@ -11,7 +11,7 @@ public class Main {
         Scanner sc = new Scanner(System.in);
         do {
             System.out.println("##############################");
-            System.out.println("Menú de la calculadora");
+            System.out.println("Menú de la calculadora, número actual: " + calculadora.getResultado());
             System.out.println("1. Ingresar digito");
             System.out.println("2. Realizar operación: sumar");
             System.out.println("3. Realizar operación: restar");
@@ -28,7 +28,6 @@ public class Main {
                     System.out.print("Introduce el digito: ");
                     valor = obtenerValor(sc);
                     calculadora.addOperando(String.valueOf(valor)); // to-do falta modificar levemente
-                    calculadora.setUltimaOperacion("");
                     pausa(1);
                     break;
                 case 2:
@@ -50,13 +49,10 @@ public class Main {
                 case 6:
                     calculadora.realizarOperaciones();
                     System.out.println("El resultado es: " + calculadora.getResultado());
-                    calculadora.setUltimaOperacion("");
                     pausa(3);
                     break;
                 case 7:
-                    calculadora.setResultado(0);
-                    calculadora.clearOperations();
-                    calculadora.setUltimaOperacion("");
+                    calculadora.limpiarOperaciones(true);
                     System.out.println("Limpiado, ahora el valor es 0.");
                     pausa(3);
                     break;
