@@ -8,58 +8,55 @@ public class Main {
         int operacion = 0;
         int valor = 0;
         System.out.println("Hola, esto es una calculadora, que operacion quieres realizar.");
+        Scanner sc = new Scanner(System.in);
         do {
             System.out.println("##############################");
             System.out.println("Menú de la calculadora");
-            System.out.println("1. Ingresar valor");
+            System.out.println("1. Ingresar digito");
             System.out.println("2. Realizar operación: sumar");
             System.out.println("3. Realizar operación: restar");
             System.out.println("4. Realizar operación: multiplicar");
             System.out.println("5. Realizar operación: dividir");
-            System.out.println("6. Ver resultado");
+            System.out.println("6. Calcular resultado");
             System.out.println("7. Limipiar resultado");
             System.out.println("8. Salir");
             System.out.println("##############################");
-            Scanner sc = new Scanner(System.in);
             String accion = sc.nextLine();
-            operacion = ValidarAccion(accion);
+            operacion = validarAccion(accion);
             switch (operacion) {
                 case 1:
-                    System.out.println("Introduce el valor");
-                    valor = ObtenerValor(sc);
-                    calculadora.setResultado(valor);
+                    System.out.print("Introduce el digito: ");
+                    valor = obtenerValor(sc);
+                    calculadora.addOperando(String.valueOf(valor)); // to-do falta modificar levemente
+                    calculadora.setUltimaOperacion("");
                     pausa(1);
                     break;
                 case 2:
-                    System.out.println("Introduce el valor a sumar: ");
-                    valor = ObtenerValor(sc);
-                    calculadora.sumar(valor);
+                    calculadora.addOperation("sumar");
                     pausa(1);
                     break;
                 case 3:
-                    System.out.println("Introduce el valor a restar: ");
-                    valor = ObtenerValor(sc);
-                    calculadora.restar(valor);
+                    calculadora.addOperation("restar");
                     pausa(1);
                     break;
                 case 4:
-                    System.out.println("Introduce el valor a multiplicar: ");
-                    valor = ObtenerValor(sc);
-                    calculadora.multiplicar(valor);
+                    calculadora.addOperation("multiplicar");
                     pausa(1);
                     break;
                 case 5:
-                    System.out.println("Introduce el valor a dividir: ");
-                    valor = ObtenerValor(sc);
-                    calculadora.dividir(valor);
+                    calculadora.addOperation("dividir");
                     pausa(1);
                     break;
                 case 6:
+                    calculadora.realizarOperaciones();
                     System.out.println("El resultado es: " + calculadora.getResultado());
+                    calculadora.setUltimaOperacion("");
                     pausa(3);
                     break;
                 case 7:
                     calculadora.setResultado(0);
+                    calculadora.clearOperations();
+                    calculadora.setUltimaOperacion("");
                     System.out.println("Limpiado, ahora el valor es 0.");
                     pausa(3);
                     break;
@@ -67,14 +64,15 @@ public class Main {
                     operacion = 100;
                     break;
                 default:
-                    System.out.println("Introduce un valor admitido.");
+                    System.out.println("ERROR: Introduce un valor admitido.");
                     pausa(3);
                     break;
             }
         } while(operacion != 100);
+        sc.close();
     }
 
-    private static int ValidarAccion(String accion) {
+    private static int validarAccion(String accion) {
         int valor = 0;
         try {
             valor = Integer.parseInt(accion);
@@ -90,7 +88,7 @@ public class Main {
         return valor;
     }
 
-    private static int ObtenerValor(Scanner sc) {
+    private static int obtenerValor(Scanner sc) {
         int valor = 0;
         try {
             valor = sc.nextInt();
