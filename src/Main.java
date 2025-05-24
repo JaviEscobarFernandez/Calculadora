@@ -11,7 +11,9 @@ public class Main {
         Scanner sc = new Scanner(System.in);
         do {
             System.out.println("##############################");
-            System.out.println("Menú de la calculadora, número actual: " + calculadora.getResultado());
+            System.out.println("Menú de la calculadora");
+            System.out.println("Número actual: " + calculadora.getResultado());
+            System.out.println("Operaciones en curso: " + calculadora.getOperaciones());
             System.out.println("1. Ingresar digito");
             System.out.println("2. Realizar operación: sumar");
             System.out.println("3. Realizar operación: restar");

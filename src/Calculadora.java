@@ -8,6 +8,7 @@ public class Calculadora {
     Calculadora() {
         resultado = 0;
         operaciones = new ArrayList<>();
+        operaciones.add("0"); // El primer numero por defecto siempre 0
         ultimaOperacion = "";
     }
 
@@ -26,6 +27,24 @@ public class Calculadora {
             operaciones.removeLast();
         operaciones.add(o);
         setUltimaOperacion("");
+    }
+    public String getOperaciones() {
+        String op = "";
+        if (!operaciones.isEmpty()) {
+            for (String o : operaciones) {
+                String ope = o;
+                switch (ope) {
+                    case "sumar": ope = "+"; break;
+                    case "restar": ope = "-"; break;
+                    case "multiplicar": ope = "*"; break;
+                    case "dividir": ope = "/"; break;
+                    default:
+                        break;
+                }
+                op += " " + ope;
+            }
+        }
+        return op;
     }
     public void limpiarOperaciones(boolean resetearResultado) {
         operaciones.clear();
@@ -56,7 +75,7 @@ public class Calculadora {
         System.out.println("Dividiendo: " + getResultado() + " entre " + valor);
         resultado /= valor;
     }
-    public void realizarOperaciones() {
+    public void realizarOperaciones2() {
         String operacion = "";
         boolean primeraOperacion = false;
         for (String i : operaciones) {
@@ -75,6 +94,61 @@ public class Calculadora {
                     setResultado(Integer.parseInt(i));
             }
         }
+        limpiarOperaciones(false);
+    }
+
+    public void realizarOperaciones() {
+        // Primero resolvemos las multiplicaciones y divisiones
+        ArrayList<String> nuevaLista = new ArrayList<>();
+        int resultadoTemporal = Integer.parseInt(operaciones.getFirst()); // Primer número
+
+        for (int i = 1; i < operaciones.size(); i += 2) {
+            String operacion = operaciones.get(i);
+            int valor = Integer.parseInt(operaciones.get(i + 1));
+            /*
+            switch (operacion) {
+                case "multiplicar":
+                case "dividir":
+                    // resultadoTemporal += aplicarOperacion(operacion, operaciones.get(i + 1)); // To-Do
+                    break;
+                default:
+                    nuevaLista.add(String.valueOf(resultadoTemporal));
+                    nuevaLista.add(operacion);
+                    resultadoTemporal = valor;
+                    break;
+            }*/
+
+            if (operacion.equals("multiplicar")) {
+                resultadoTemporal *= valor;
+            } else if (operacion.equals("dividir")) {
+                if (valor == 0) {
+                    System.err.println("ERROR: No puedes dividir entre 0");
+                    return;
+                }
+                resultadoTemporal /= valor;
+            } else {
+                nuevaLista.add(String.valueOf(resultadoTemporal));
+                nuevaLista.add(operacion);
+                resultadoTemporal = valor;
+            }
+        }
+        nuevaLista.add(String.valueOf(resultadoTemporal));
+
+        // Segundo paso: ahora procesamos sumas y restas
+        resultadoTemporal = Integer.parseInt(nuevaLista.getFirst());
+
+        for (int i = 1; i < nuevaLista.size(); i += 2) {
+            String operacion = nuevaLista.get(i);
+            int valor = Integer.parseInt(nuevaLista.get(i + 1));
+
+            if (operacion.equals("sumar")) {
+                resultadoTemporal += valor;
+            } else if (operacion.equals("restar")) {
+                resultadoTemporal -= valor;
+            }
+        }
+
+        setResultado(resultadoTemporal);
         limpiarOperaciones(false);
     }
 
